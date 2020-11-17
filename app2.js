@@ -1,11 +1,10 @@
-//read json file 
-//need function
-
+//function that looks for selected id value
 function getSample() {
     var inputid = d3.select("#selDataset")
-
+    //read json file 
     d3.json("samples.json").then((data) => {
         console.log(data.names);
+        //input 
         data.names.forEach((samplenm) => {
             inputid.append("option").text(samplenm).property("value")
         })
@@ -16,7 +15,9 @@ function getSample() {
 
 getSample()
 
+//function when sample id is changed 
 function optionChanged(sampleiddata) {
+    //update demographic info area
     var demoarea = d3.select('#sample-metadata');
     d3.json("samples.json").then((data) => {
         var filtermeta = data.metadata.filter(meta => meta.id == sampleiddata)
@@ -51,7 +52,7 @@ function optionChanged(sampleiddata) {
 
         Plotly.newPlot("bar", chartdata, layout);
 
-        //bubble chart
+        //create bubble chart
         var trace2 = {
             x: firstid.otu_ids,
             y: firstid.sample_values,
@@ -65,39 +66,11 @@ function optionChanged(sampleiddata) {
         var bubbledata = [trace2];
 
         var layout2 = {
-            title: 'Microbial Species',
+            title: 'Sample OTU ID Values',
             showlegend: false,
 
         };
 
         Plotly.newPlot('bubble', bubbledata, layout2);
     });
-}
-
-
-// //bubble chart need function
-// function buildbubble() {
-//     var trace2 = {
-//         x: sampleOtuids,
-//         y: sampleValues,
-//         mode: 'markers',
-//         marker: {
-//             size: sampleValues,
-//             color: sampleOtuids,
-//         }
-//     };
-
-//     var bubbledata = [trace2];
-
-//     var layout2 = {
-//         title: 'Microbial Species',
-//         showlegend: false,
-//         height: 600,
-//         width: 600
-//     };
-
-//     Plotly.newPlot('bubble', bubbledata, layout2);
-// };
-
-// // Add event listener for subject ID selection
-// d3.select("#selDataset").on("change", getSample);
+};
